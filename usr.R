@@ -96,8 +96,9 @@ summary.lm(lmfit.period_test1)
 ### Self checking, it seems if we only keep USD, it still shows 0.99 R^2
 
 ###
-lmfit.period_test2<-lm( CNY_SFR ~ EUR_SFR,
+lmfit.period_test2<-lm( CNY_SFR ~ (22/49) * USD_SFR + (16/49) * YEN_SFR + (11/49) * EUR_SFR,
                         data=window(fxrates000.0.logret,
-                                    start=as.Date("2001-01-01"), end=as.Date("2005-06-30")) )
+                                    start=as.Date("2017-01-01"), end=as.Date("2022-06-30")) )
 summary.lm(lmfit.period_test2)
 ### Self checking2
+tail(fxrates000)
