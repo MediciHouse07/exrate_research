@@ -1,15 +1,103 @@
-#source(file="fm_casestudy_0_InstallOrLoadLibraries.r")
+# Notation convention for comments is from bottom to the above
 
-#source(file="fm_casestudy_fx_1.r")
+#source(file="fm_casestudy_0_InstallOrLoadLibraries.r") # Pre-process
 
-load(file="fm_casestudy_fx_1.Rdata")
+#source(file="fm_casestudy_fx_1.r") # Pre-process
+
+load(file="fm_casestudy_fx_1.Rdata") # To load data, without this, there is no data in the memory
+library("quantmod")
+library("tseries")
+library("vars")
+library("fxregime")
+library("moments")
+library(zoo)
+#Load package
 
 list.symbol0<-c("DEXCHUS", "DEXJPUS", "DEXKOUS", "DEXMAUS","DEXUSEU", "DEXUSUK", "DEXTHUS", "DEXSZUS")
-
+# Ex that the research interested in
 fxrates000<-fred.fxrates.00[,list.symbol0]
+# Only fetch specified ex rate to the memory
+head(fred.fxrates.00)
 
 dim(fxrates000)
 
 head(fxrates000)
 
 tail(fxrates000)
+# explore data set
+
+options(width=120)
+
+print(fred.fxrates.doc[match(list.symbol0, fred.fxrates.doc$symbol),c("symbol0", "fx.desc", "fx.units")])
+# In order to print explainatory document
+par(mfcol=c(2,2))
+
+for (j0 in c(1:ncol(fxrates000))){
+  plot(fxrates000[,j0],
+  main=dimnames(fxrates000)[[2]][j0])
+}
+# print regression for each of ex rate, x axis is date version instead of number
+#1.3
+
+# 2.0 Convert currencies to base rate of DEXSZUS, Swiss Franc
+fxrates000.0<-fxrates000
+
+for (jcol0 in c(1,2,3,4,7)){
+  coredata(fxrates000.0)[,jcol0]<- coredata(fxrates000.0[,jcol0])/coredata(fxrates000[,8])
+}
+# to have other country / sz effect
+
+for (jcol0 in c(5,6)){
+  coredata(fxrates000.0)[,jcol0]<- coredata(1./fxrates000.0[,jcol0])/
+  coredata(fxrates000.0[,8])
+}
+# For exchange rates with 1 U.S. $ in numerator, divide inverse by DEXSZUS
+
+
+dimnames(fxrates000.0)[[2]]
+coredata(fxrates000.0)[,8]<- 1/coredata(fxrates000)[,8]
+# For USD, divide $1 by the DEXSZUS rate
+
+list.symbol0.swiftcode<-c("CNY","YEN","WON","MYR","EUR","GBP","THB","USD")
+mode(list.symbol0.swiftcode)
+
+dimnames(fxrates000.0)[[2]]<-paste(list.symbol0.swiftcode,"_SFR",sep="")
+head(fxrates000.0)
+# Rename
+par(mfcol=c(2,2))
+for (j0 in c(1:ncol(fxrates000.0))){
+  plot(fxrates000.0[,j0],
+  main=dimnames(fxrates000.0)[[2]][j0])
+}
+# Plot exchange rate time series in 2x4 panel
+
+fxrates000.0.logret<-diff(log(fxrates000.0)) # difference between the next - the prior to the log of the value
+
+# apply(is.na(fxrates000.0),2,sum) can be used to check if there is missing data
+# fxrates000.0<-na.locf(fxrates000.0) this function can fill in missing data
+
+par(mfcol=c(2,2)) # X1-X2 variable?
+for (j0 in c(1:ncol(fxrates000.0.logret))){
+  plot(fxrates000.0.logret[,j0],
+  main=dimnames(fxrates000.0.logret)[[2]][j0])
+}
+
+lmfit.period1<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR,
+                   data=window(fxrates000.0.logret,
+                                 start=as.Date("2001-01-01"), end=as.Date("2005-06-30")) )
+summary.lm(lmfit.period1)
+
+
+###
+lmfit.period_test1<-lm( CNY_SFR ~ USD_SFR,
+                   data=window(fxrates000.0.logret,
+                               start=as.Date("2001-01-01"), end=as.Date("2005-06-30")) )
+summary.lm(lmfit.period_test1)
+### Self checking, it seems if we only keep USD, it still shows 0.99 R^2
+
+###
+lmfit.period_test2<-lm( CNY_SFR ~ EUR_SFR,
+                        data=window(fxrates000.0.logret,
+                                    start=as.Date("2001-01-01"), end=as.Date("2005-06-30")) )
+summary.lm(lmfit.period_test2)
+### Self checking2
