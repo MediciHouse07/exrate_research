@@ -102,3 +102,26 @@ lmfit.period_test2<-lm( CNY_SFR ~ (22/49) * USD_SFR + (16/49) * YEN_SFR + (11/49
 summary.lm(lmfit.period_test2)
 ### Self checking2
 tail(fxrates000)
+
+lmfit.period2<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR +WON_SFR + MYR_SFR + THB_SFR,
+                   data=window(fxrates000.0.logret,
+                                start=as.Date("2005-07-01"), end=as.Date("2005-12-31")) )
+summary.lm(lmfit.period2)
+# Basket in the paper is more reliable
+###
+lmfit.period_test<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR,
+                   data=window(fxrates000.0.logret,
+                               start=as.Date("2005-07-01"), end=as.Date("2005-12-31")) )
+summary.lm(lmfit.period_test)
+###
+
+
+for (year0 in as.character(c(2013:2022))){
+ # year0<-"2012"
+    lmfit.year0<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR + WON_SFR + MYR_SFR + THB_SFR, data=fxrates000.0.logret[year0])
+
+      cat("\n\n--------------------------------\n");cat(year0);cat(":\n")
+      print(summary.lm(lmfit.year0))
+      rate.appreciation.usd<-round( exp(252*log(1+ lmfit.year0$coefficients[1])) -1,digits=3)
+      cat("\n"); cat(year0); cat("\t Annualized appreciation rate to implied reference basket: "); cat(rate.appreciation.usd); cat("\n")
+      }

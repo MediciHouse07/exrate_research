@@ -36,6 +36,8 @@ It will extract the needed data and replace it with the new one
 
 ### Quick notes
 #### Three way of checking data type
-class(x)
-mode(x)
-typeof(x)
+class(x) <br>
+mode(x) <br>
+typeof(x) <br>
+
+9.592e-01 * 1 = 0.9592 <br>
