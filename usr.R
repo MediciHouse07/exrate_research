@@ -125,3 +125,13 @@ for (year0 in as.character(c(2013:2022))){
       rate.appreciation.usd<-round( exp(252*log(1+ lmfit.year0$coefficients[1])) -1,digits=3)
       cat("\n"); cat(year0); cat("\t Annualized appreciation rate to implied reference basket: "); cat(rate.appreciation.usd); cat("\n")
       }
+
+## 22/03/20
+year0<-"2012"
+par(mfcol=c(1,1))
+ts.plot(cumsum(fxrates000.0.logret["2012"]), col=rainbow(NCOL(fxrates000.0.logret)),
+        main="2012 Currency Returns")
+legend(x=150,y=.15, legend=dimnames(fxrates000.0.logret)[[2]], lty=rep(1,times=ncol(fxrates000.0.logret)),
+         col=rainbow(NCOL(fxrates000.0.logret)), cex=0.70)
+
+#fxrates000.0.logret difference between the next - the prior to the log of the value
