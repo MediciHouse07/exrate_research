@@ -36,6 +36,7 @@ for (j0 in c(1:ncol(fxrates000))){
   plot(fxrates000[,j0],
   main=dimnames(fxrates000)[[2]][j0])
 }
+# picture can't display
 # print regression for each of ex rate, x axis is date version instead of number
 #1.3
 
@@ -72,7 +73,7 @@ for (j0 in c(1:ncol(fxrates000.0))){
 # Plot exchange rate time series in 2x4 panel
 
 fxrates000.0.logret<-diff(log(fxrates000.0)) # difference between the next - the prior to the log of the value
-
+#apply(is.na(fxrates000.0),2,sum)
 # apply(is.na(fxrates000.0),2,sum) can be used to check if there is missing data
 # fxrates000.0<-na.locf(fxrates000.0) this function can fill in missing data
 

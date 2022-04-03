@@ -41,3 +41,8 @@ mode(x) <br>
 typeof(x) <br>
 
 9.592e-01 * 1 = 0.9592 <br>
+
+#### Info in the earlier paper
+- 8/40 prior to 1956 NT peg solely to USD
+- 9/40 PLAZA accord 1985-1986 depreciation USD->appreciation Yen, bad for Japan export->PLAZA->US want to depreciate USD->seems didn't work->thought of the reason was from NIC & EU -> force TW NT to appreciate by link their currency to Yen
+- Indonesia, suddenly acquired lots of international debt denoted in Yen, weight of Yen changed significantly
