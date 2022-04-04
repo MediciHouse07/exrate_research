@@ -27,6 +27,13 @@ git push -u origin main
 …or import code from another repository
 You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
 
+Frequent process when uploading updates:
+```
+git add .
+git commit -m ""
+git push -u origin main
+```
+
 ### Termnology used in the research
 ### Q&A
 
