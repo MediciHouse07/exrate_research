@@ -36,11 +36,13 @@ It will extract the needed data and replace it with the new one
 
 ### Quick notes
 #### Three way of checking data type
-class(x) <br>
-mode(x) <br>
-typeof(x) <br>
+- class(x)
+- mode(x)
+- typeof(x)
+- 9.592e-01 * 1 = 0.9592
+- in file "get_fx.R", you can export exrate data from 2110-2204 period, around 6/7 months of data
 
-9.592e-01 * 1 = 0.9592 <br>
+
 
 #### Info in the earlier paper
 - 8/40 prior to 1956 NT peg solely to USD

@@ -1,6 +1,6 @@
 # fm_casestudy_0_InstallOrLoadLibraries.r
 
-#   * Install/load R packages 
+#   * Install/load R packages
 #   * Collect historical financial data from internet
 #   * Create time series data matrix: casestudy1.data0.0
 #         Closing prices on stocks (BAC, GE, JDSU, XOM)
@@ -12,11 +12,11 @@
 # 0.1 Install packages ---
 #     Set ind.install0 to TRUE if running script for first time on a computer
 #     or updating the packages
-ind.install0<-TRUE
+ind.install0<-FALSE
 #
 if (ind.install0){
-  install.packages("quantmod") 
-  install.packages("tseries") 
+  install.packages("quantmod")
+  install.packages("tseries")
   install.packages("vars")
   install.packages("fxregime")
   install.packages("moments")
@@ -25,9 +25,9 @@ if (ind.install0){
 }
 # 0.2 Load packages into R session
 
-library("quantmod")  
-library("tseries")  
-library("vars")  
-library("fxregime")  
-library("moments")  
-library("rugarch")  
+library("quantmod")
+library("tseries")
+library("vars")
+library("fxregime")
+library("moments")
+library("rugarch")
