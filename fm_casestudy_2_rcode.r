@@ -135,7 +135,7 @@ summary.lm(lmfit.period2)
 
 for (year0 in as.character(c(2006:2022))){
   # year0<-"2012"
-  lmfit.year0<-lm( USD_SFR ~ CNY_SFR + YEN_SFR + EUR_SFR + GBP_SFR +
+  lmfit.year0<-lm( GBP_SFR ~ CNY_SFR + YEN_SFR + EUR_SFR + USD_SFR +
                      WON_SFR + MYR_SFR + THB_SFR,
                    data=fxrates000.0.logret[year0])
 
