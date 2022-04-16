@@ -21,7 +21,7 @@ load(file="fm_casestudy_fx_1.Rdata")
 
 # 1.0 Extract time series matrix of exchange rates for symbols given by list.symbol0 ----
 
-list.symbol0<-c("DEXCHUS", "DEXJPUS", "DEXKOUS", "DEXMAUS", 
+list.symbol0<-c("DEXCHUS", "DEXJPUS", "DEXKOUS", "DEXMAUS",
                 "DEXUSEU", "DEXUSUK", "DEXTHUS", "DEXSZUS")
 
 fxrates000<-fred.fxrates.00[,list.symbol0]
@@ -29,7 +29,7 @@ dim(fxrates000)
 head(fxrates000)
 tail(fxrates000)
 
-# Print symbol/description/units of these rates from data frame  fred.fxrates.doc 
+# Print symbol/description/units of these rates from data frame  fred.fxrates.doc
 
 options(width=120)
 print(fred.fxrates.doc[match(list.symbol0, fred.fxrates.doc$symbol),
@@ -38,7 +38,7 @@ print(fred.fxrates.doc[match(list.symbol0, fred.fxrates.doc$symbol),
 # Plot exchange rate time series in 2x2 panels
 par(mfcol=c(2,2))
 for (j0 in c(1:ncol(fxrates000))){
-  plot(fxrates000[,j0], 
+  plot(fxrates000[,j0],
        main=dimnames(fxrates000)[[2]][j0])
 }
 
@@ -46,7 +46,7 @@ for (j0 in c(1:ncol(fxrates000))){
 
 #Exchange Rate Regimes for the Chinese Yuan #
 #The Chinese Yuan was pegged to the US Dollar prior to July 2005.
-#Then, China announced that the exchange rate would be set with 
+#Then, China announced that the exchange rate would be set with
 #reference to a basket of other currencies, allowing for a movement of up to 0.3\% movement within any given day.
 #The actual currencies and their basket weights are unannounced by China.
 
@@ -61,7 +61,7 @@ fxrates000.0<-fxrates000
 # For exchange rates with 1 U.S. $ in base, divide by DEXSZUS
 for (jcol0 in c(1,2,3,4,7)){
   coredata(fxrates000.0)[,jcol0]<- coredata(fxrates000.0[,jcol0])/coredata(fxrates000[,8])
-  
+
 }
 # For exchange rates with 1 U.S. $ in numerator, divide inverse by DEXSZUS
 for (jcol0 in c(5,6)){
@@ -72,7 +72,7 @@ dimnames(fxrates000.0)[[2]]
 coredata(fxrates000.0)[,8]<- 1/coredata(fxrates000)[,8]
 
 # Rename series in terms of the SWIFT currency codes
-#     as determined by the International Organization for Standardization. 
+#     as determined by the International Organization for Standardization.
 
 list.symbol0.swiftcode<-c("CNY","YEN","WON","MYR","EUR","GBP","THB","USD")
 dimnames(fxrates000.0)[[2]]<-paste(list.symbol0.swiftcode,"_SFR",sep="")
@@ -82,24 +82,24 @@ head(fxrates000.0)
 #  Plot exchange rate time series in 2xs panels
 par(mfcol=c(2,2))
 for (j0 in c(1:ncol(fxrates000.0))){
-  plot(fxrates000.0[,j0], 
+  plot(fxrates000.0[,j0],
        main=dimnames(fxrates000.0)[[2]][j0])
 }
 
-# Linear Regression Models of Currency Returns 
+# Linear Regression Models of Currency Returns
 
 # 3.0 Compute daily price changes on the log scale
 #     Due to missing data, fill in missing values with previous non-NA
 #     To check for presence of missing values, execute
 #         apply(is.na(fxrates000.0),2,sum)
-#     If necessary apply 
+#     If necessary apply
 #   fxrates000.0<-na.locf(fxrates000.0)
 fxrates000.0.logret<-diff(log(fxrates000.0))
 dimnames(fxrates000.0.logret)[[2]]
 
 par(mfcol=c(2,2))
 for (j0 in c(1:ncol(fxrates000.0.logret))){
-  plot(fxrates000.0.logret[,j0], 
+  plot(fxrates000.0.logret[,j0],
        main=dimnames(fxrates000.0.logret)[[2]][j0])
 }
 
@@ -107,8 +107,8 @@ for (j0 in c(1:ncol(fxrates000.0.logret))){
 
 options(show.signif.stars=FALSE)
 
-lmfit.period1<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR, 
-         data=window(fxrates000.0.logret, 
+lmfit.period1<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR,
+         data=window(fxrates000.0.logret,
                      start=as.Date("2001-01-01"), end=as.Date("2005-06-30")) )
 summary.lm(lmfit.period1)
 
@@ -119,13 +119,13 @@ summary.lm(lmfit.period1)
 # Second, we fit the regression model for the first six months following the announcement of the change in currency policy.
 
 
-lmfit.period2<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR + 
-                     WON_SFR + MYR_SFR + THB_SFR, 
-                   data=window(fxrates000.0.logret, 
+lmfit.period2<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR +
+                     WON_SFR + MYR_SFR + THB_SFR,
+                   data=window(fxrates000.0.logret,
                         start=as.Date("2005-07-01"), end=as.Date("2005-12-31")) )
 summary.lm(lmfit.period2)
 
-# During this six-month period, there is evidence of the Yuan departing from a US Dollar peg.  The exchange rates with the statsitically significant regression parameters are for the Korean Won (WON\_SFR) and the Malaysian Ringgit (MYR\_SFR). 
+# During this six-month period, there is evidence of the Yuan departing from a US Dollar peg.  The exchange rates with the statsitically significant regression parameters are for the Korean Won (WON\_SFR) and the Malaysian Ringgit (MYR\_SFR).
 
 
 
@@ -133,12 +133,12 @@ summary.lm(lmfit.period2)
 
 
 
-for (year0 in as.character(c(2006:2013))){
+for (year0 in as.character(c(2006:2022))){
   # year0<-"2012"
-  lmfit.year0<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR +
-                     WON_SFR + MYR_SFR + THB_SFR, 
-                   data=fxrates000.0.logret[year0])  
-  
+  lmfit.year0<-lm( USD_SFR ~ CNY_SFR + YEN_SFR + EUR_SFR + GBP_SFR +
+                     WON_SFR + MYR_SFR + THB_SFR,
+                   data=fxrates000.0.logret[year0])
+
   cat("\n\n--------------------------------\n");cat(year0);cat(":\n")
   print(summary.lm(lmfit.year0))
   rate.appreciation.usd<-round( exp(252*log(1+ lmfit.year0$coefficients[1])) -1,digits=3)
@@ -146,13 +146,13 @@ for (year0 in as.character(c(2006:2013))){
 }
 
 #From these annual results we note:
-#   These fitted regression models demonstrate that the statistical evidence for the underlying reference basket of currencies changes from year to year. 
+#   These fitted regression models demonstrate that the statistical evidence for the underlying reference basket of currencies changes from year to year.
 #   Note how the different exhange rates are significant predictors of the daily change in the Yuan exchange rate for different years.
 #   The computations include a measure of the annualized trend in the Yuan exchange rate relative to the other currencies.  Notice that this rate is negative, to varying degrees over the seven-plus years.
 
 
 #  We illustrate some additional features of exchange rate regime modelling using the reference basket implied by the data for 2012.
- 
+
 
 
 #First, we plot the currency returns for the Yuan and all currencies included in the analysis.
@@ -169,8 +169,8 @@ par(mfcol=c(1,1))
 #Then, we plot the currency return of the Yuan and that of the implied reference basket specified by the regression:
 
 
-lmfit.year0<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR + 
-                   WON_SFR + MYR_SFR + THB_SFR, 
+lmfit.year0<-lm( CNY_SFR ~ USD_SFR + YEN_SFR + EUR_SFR + GBP_SFR +
+                   WON_SFR + MYR_SFR + THB_SFR,
                  data=fxrates000.0.logret[year0])
 
 
@@ -186,7 +186,7 @@ ts.plot(cumsum(cbind(y0.actual, y0.fit)),
 
 #Finally, we apply the R function $influence.measures()$
 
-layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
+layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page
 plot(lmfit.year0)
 
 #These diagnostics indicate:
