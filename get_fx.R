@@ -1,4 +1,12 @@
-getFX("TRY/USD")
+library("quantmod")
+library("tseries")
+library("vars")
+library("fxregime")
+library("moments")
+library("rugarch")
 
-currency <- c("TRY/USD",'EUR/USD','INR/USD')
+getFX("TRY/USD")
+chartSeries(TRYUSD)
+
+# currency <- c("TRY/USD",'EUR/USD','INR/USD')
 getFX('EUR/USD')
