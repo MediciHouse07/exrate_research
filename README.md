@@ -57,5 +57,8 @@ It will extract the needed data and replace it with the new one
 - Indonesia, suddenly acquired lots of international debt denoted in Yen, weight of Yen changed significantly
 
 #### Sub task
-
+- Find daily basis world exchange rate basket
+- Verify the data
+- Replicate the analysis grouply
+- Check
 - Target:what is today's currency basket
